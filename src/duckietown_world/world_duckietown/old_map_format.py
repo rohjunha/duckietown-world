@@ -32,22 +32,6 @@ class MapFormat1Object(TypedDict, total=False):
     tag: object
 
 
-#
-#
-# class MapFormat2Object(TypedDict, total=False):
-#     kind: MapFormat1Constants.ObjectKind
-#
-#     pos: List[float]
-#     rotate: float
-#     optional: bool
-#     color: str
-#     static: bool
-#     height: float
-#     scale: float
-#     pose: object
-#     attache: object
-
-
 class MapFormat1(TypedDict, total=False):
     tiles: List[List[str]]
 
