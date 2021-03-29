@@ -3,13 +3,15 @@ __version__ = "6.2.7"
 
 import logging
 
-from zuper_commons.logs import ZLogger
+# from zuper_commons.logs import ZLogger
 
-logger = ZLogger(__name__)
+# logger = ZLogger(__name__)
+logger = logging.getLogger(__name__)
+
 import os
 
 path = os.path.dirname(os.path.dirname(__file__))
-logger.debug(f"duckietown-world version {__version__} path {path}")
+# logger.debug(f"duckietown-world version {__version__} path {path}")
 
 # remove noisy logging
 from duckietown_serialization_ds1 import logger as dslogger

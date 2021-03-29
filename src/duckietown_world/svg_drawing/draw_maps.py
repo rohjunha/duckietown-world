@@ -6,7 +6,7 @@ import sys
 from typing import cast, TYPE_CHECKING
 
 import coloredlogs
-from zuper_commons.fs import AbsDirPath, FilePath
+from pathlib import Path as FilePath
 
 from duckietown_world.utils import save_rgb_to_jpg
 
@@ -69,7 +69,7 @@ def draw_map(output: str, duckietown_map: "DuckietownMap") -> None:
         logger.info(f"Written to {fn}")
 
 
-def draw_map_gymd(map_name: str, output: AbsDirPath, style: str):
+def draw_map_gymd(map_name: str, output, style: str):
     try:
         from gym_duckietown.simulator import Simulator
     except ImportError:

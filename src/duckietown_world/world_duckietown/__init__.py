@@ -1,7 +1,7 @@
 # coding=utf-8
-from zuper_commons.logs import ZLogger
+from logging import getLogger
 
-logger = ZLogger(__name__)
+logger = getLogger(__name__)
 from .other_objects import *
 from .tile import *
 from .tile_coords import *

@@ -6,14 +6,13 @@ from typing import List
 
 import numpy as np
 import oyaml as yaml
-from zuper_commons.fs import FilePath
-from zuper_commons.types import ZKeyError, ZValueError
+from zuper_commons.types import ZValueError
+from pathlib import Path as FilePath
 
 from duckietown_serialization_ds1 import Serializable
 from . import logger
 from .duckiebot import DB18
 from .duckietown_map import DuckietownMap
-from .old_map_format import MapFormat1Object
 from .other_objects import (
     Barrier,
     Building,
@@ -127,7 +126,7 @@ def construct_map(yaml_data: dict) -> DuckietownMap:
 
             tm.add_tile(b, (A - 1) - a, orient, tile)
 
-    def go(obj_name0: str, desc0: MapFormat1Object):
+    def go(obj_name0: str, desc0):
         obj = get_object(desc0)
         transform = get_transform(desc0, tm.W, tile_size)
         dm.set_object(obj_name0, obj, ground_truth=transform)
@@ -158,7 +157,7 @@ def construct_map(yaml_data: dict) -> DuckietownMap:
     return dm
 
 
-def get_object(desc: MapFormat1Object):
+def get_object(desc):
     kind = desc["kind"]
 
     attrs = {}
@@ -201,7 +200,7 @@ def get_object(desc: MapFormat1Object):
     return obj
 
 
-def get_transform(desc: MapFormat1Object, W: int, tile_size: float) -> SE2Transform:
+def get_transform(desc, W: int, tile_size: float) -> SE2Transform:
     rotate_deg = desc.get("rotate", 0)
     rotate = np.deg2rad(rotate_deg)
     if "pos" in desc:
@@ -303,5 +302,5 @@ def get_texture_file(tex_name: str) -> List[FilePath]:
 
     if not res:
         msg = f"Could not find any texture for {tex_name}"
-        raise ZKeyError(msg, tried=tried)
+        raise KeyError(msg, tried=tried)
     return res

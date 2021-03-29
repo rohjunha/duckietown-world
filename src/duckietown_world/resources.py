@@ -1,13 +1,9 @@
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import cast, Dict, List, Tuple
+from typing import List
 
-from zuper_commons.fs import AbsDirPath, AbsFilePath, DirPath, FilePath, locate_files
-from zuper_commons.types import ZKeyError
-
-from . import logger
-
+from zuper_commons.fs import locate_files
 
 RESOURCES_PATTERNS = ["*.png", "*.jpg", "*.yaml", "*.gltf", "*.obj", "*.mtl", "*.json", "*.tga", "*.bmp"]
 
@@ -23,7 +19,7 @@ def list_maps() -> List[str]:
     return list(f())
 
 
-def list_maps2() -> Dict[str, AbsFilePath]:
+def list_maps2():
     maps_dir = get_maps_dir()
 
     def f():
@@ -34,27 +30,28 @@ def list_maps2() -> Dict[str, AbsFilePath]:
     return dict(f())
 
 
-def get_maps_dir() -> AbsDirPath:
+def get_maps_dir():
     dd = get_data_dir()
     d = os.path.join(dd, "gd1/maps")
     assert os.path.exists(d), d
     return d
 
 
-def get_data_dir() -> AbsDirPath:
+def get_data_dir():
     """ location of data dir """
     abs_path_module = os.path.realpath(__file__)
     module_dir = Path(os.path.dirname(abs_path_module))
-    return cast(DirPath, str(module_dir / "data"))
+    return str(module_dir / "data")
+    # return cast(DirPath, str(module_dir / "data"))
 
 
 @lru_cache(maxsize=None)
-def get_data_resources() -> Tuple[Dict[str, FilePath], List[FilePath]]:
+def get_data_resources():
     data = get_data_dir()
-    logger.info(data=data)
+    # logger.info(data=data)
     files = locate_files(data, pattern=RESOURCES_PATTERNS)
-    res2: List[FilePath] = []
-    res1: Dict[str, FilePath] = {}
+    res2 = []
+    res1 = {}
     for f in files:
         basename = os.path.basename(f)
         if basename in res1:
@@ -68,7 +65,7 @@ def get_data_resources() -> Tuple[Dict[str, FilePath], List[FilePath]]:
     return res1, res2
 
 
-def get_resource_path(basename: str) -> FilePath:
+def get_resource_path(basename: str):
     res1, res2 = get_data_resources()
     if "/" in basename:
         for v in res2:
@@ -79,4 +76,4 @@ def get_resource_path(basename: str) -> FilePath:
         if basename in res1:
             return res1[basename]
     msg = f"Could not find resource {basename!r}."
-    raise ZKeyError(msg, known=sorted(res2), res1=sorted(res1))
+    raise KeyError(msg)  #, known=sorted(res2), res1=sorted(res1))

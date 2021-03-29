@@ -20,15 +20,15 @@ from geometry import (
 )
 from networkx import DiGraph, find_cycle, NetworkXNoCycle
 from zuper_commons.fs import (
-    FilePath,
     make_sure_dir_exists,
     read_bytes_from_file,
     read_ustring_from_utf8_file,
     write_ustring_to_utf8_file,
 )
-from zuper_commons.logs import ZLogger
 from zuper_commons.text import get_md5
 from zuper_commons.types import ZValueError
+
+from pathlib import Path as FilePath
 
 from duckietown_world import (
     DB18,
@@ -74,7 +74,8 @@ from ..resources import get_resource_path
 from ..world_duckietown import get_texture_file, ij_from_tilename
 
 __all__ = ["gltf_export_main", "export_gltf", "make_material", "get_square", "add_node", "add_polygon", "gm"]
-logger = ZLogger(__name__)
+from logging import getLogger
+logger = getLogger(__name__)
 
 
 class GLTF(GLTF0):

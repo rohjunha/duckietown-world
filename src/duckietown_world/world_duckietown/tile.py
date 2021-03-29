@@ -7,7 +7,7 @@ from typing import Iterator, Optional, Tuple
 import numpy as np
 from geometry import extract_pieces, SE2value
 from svgwrite.container import Use
-from zuper_commons.fs import FilePath, read_bytes_from_file
+from zuper_commons.fs import read_bytes_from_file
 from zuper_commons.types import ZValueError
 
 from duckietown_world.geo import (
@@ -104,11 +104,11 @@ class FancyTextures:
     metallic_roughness: Optional[np.ndarray]
     occlusion: Optional[np.ndarray]
 
-    fn_texture: Optional[FilePath] = None
-    fn_normals: Optional[FilePath] = None
-    fn_emissive: Optional[FilePath] = None
-    fn_metallic_roughness: Optional[FilePath] = None
-    fn_occlusion: Optional[FilePath] = None
+    fn_texture = None
+    fn_normals = None
+    fn_emissive = None
+    fn_metallic_roughness = None
+    fn_occlusion = None
 
     def write(self, prefix: str, ff: str):
         from ..utils.images import save_rgb_to_jpg
@@ -145,7 +145,7 @@ from PIL import Image
 
 
 @lru_cache(maxsize=None)
-def read_rgba(fn: FilePath, resize: int) -> np.ndarray:
+def read_rgba(fn, resize: int) -> np.ndarray:
     try:
         im = Image.open(fn)
     except Exception as e:
@@ -162,7 +162,7 @@ def read_rgba(fn: FilePath, resize: int) -> np.ndarray:
     return data
 
 
-def read_rgb(fn: FilePath, resize: int) -> np.ndarray:
+def read_rgb(fn, resize: int) -> np.ndarray:
     try:
         im = Image.open(fn)
     except Exception as e:
@@ -362,7 +362,7 @@ def get_fancy_textures(style: str, tile_kind: str, size: int) -> FancyTextures:
 #
 
 
-def get_if_exists(style, kind, which: str) -> Optional[FilePath]:
+def get_if_exists(style, kind, which: str):
     from .map_loading import get_texture_file
 
     q = f"tiles-processed/{style}/{kind}/{which}"
@@ -382,10 +382,10 @@ class Tile(PlacedObject):
 
     style = "photos"
 
-    fn: Optional[FilePath]
-    fn_normal: Optional[FilePath]
-    fn_emissive: Optional[FilePath]
-    fn_metallic_roughness: Optional[FilePath]
+    # fn: Optional[FilePath]
+    # fn_normal: Optional[FilePath]
+    # fn_emissive: Optional[FilePath]
+    # fn_metallic_roughness: Optional[FilePath]
 
     def __init__(self, kind, drivable, **kwargs):
         # noinspection PyArgumentList
