@@ -1,4 +1,10 @@
-from typing import Dict, List, NewType, TypedDict, Union
+import sys
+
+if sys.version_info >= (3, 8):
+    from typing import Dict, List, NewType, TypedDict, Union
+else:
+    from typing_extensions import NewType, TypedDict
+    from typing import Dict, List, Union
 
 __all__ = ["MapFormat1", "MapFormat1Object", "MapFormat1Constants"]
 
